@@ -1,0 +1,1249 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head profile="http://gmpg.org/xfn/11">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+
+	<title>Stevish   &raquo; RSA Encryption in Pure PHP</title>
+	
+	<meta name="generator" content="WordPress" /> <!-- leave this for stats -->
+
+	<link rel="shortcut icon" href="http://stevish.com/favicon.ico" />
+	<link rel="stylesheet" href="http://stevish.com/wpstevishcom/wp-content/themes/nineshadesgreen/style.css" type="text/css" media="screen" />
+
+
+<!--[if IE]>
+<style type="text/css" media="screen">
+hr {
+	display: none;
+	}
+
+.hr {
+	margin-top: 4px;
+	margin-bottom: 4px;
+	border-bottom: 1px solid #f5fff0;
+	border-top: 1px solid #786;
+	}
+
+h1.sidetitle {
+	padding: 3px 0;
+}
+
+#searchbar ul {
+	margin-top: 10px;
+	margin-left: 10px;
+	padding: 2px;
+	height: 30px;
+	}
+
+#searchbar ul li {
+	padding-left: 8px;
+	padding-bottom: 0px;
+	height: 100px;
+	}
+
+.widecolumn h2 {
+	margin-top: 50px;
+	}
+
+#page {
+	width: 521px;
+	padding: 0;
+	margin: 0;
+	}
+
+#sidebar {
+	width: 150px;
+	}
+
+#header {
+	width: 684px;
+	}
+
+#footer {
+	width: 674px;
+	}
+
+body { behavior:url("http://stevish.com/wpstevishcom/wp-content/themes/nineshadesgreen/csshover.htc"); }
+</style>
+<![endif]-->
+
+	<link href="http://stevish.com/wpstevishcom/wp-content/themes/nineshadesgreen/iepop.css"
+	rel="stylesheet" type="text/css" />
+
+	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://stevish.com/feed" />
+	<link rel="alternate" type="text/xml" title="RSS .92" href="http://stevish.com/feed/rss" />
+	<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="http://stevish.com/feed/atom" />
+	<link rel="pingback" href="http://stevish.com/wpstevishcom/xmlrpc.php" />
+	<link rel="shortcut icon" href="favicon.ico" />
+
+
+		<link rel='archives' title='September 2012' href='http://stevish.com/archives/date/2012/09' />
+	<link rel='archives' title='January 2012' href='http://stevish.com/archives/date/2012/01' />
+	<link rel='archives' title='October 2011' href='http://stevish.com/archives/date/2011/10' />
+	<link rel='archives' title='September 2011' href='http://stevish.com/archives/date/2011/09' />
+	<link rel='archives' title='October 2010' href='http://stevish.com/archives/date/2010/10' />
+	<link rel='archives' title='March 2010' href='http://stevish.com/archives/date/2010/03' />
+	<link rel='archives' title='October 2009' href='http://stevish.com/archives/date/2009/10' />
+	<link rel='archives' title='June 2009' href='http://stevish.com/archives/date/2009/06' />
+	<link rel='archives' title='April 2009' href='http://stevish.com/archives/date/2009/04' />
+	<link rel='archives' title='March 2009' href='http://stevish.com/archives/date/2009/03' />
+	<link rel='archives' title='February 2009' href='http://stevish.com/archives/date/2009/02' />
+	<link rel='archives' title='January 2009' href='http://stevish.com/archives/date/2009/01' />
+	<link rel='archives' title='November 2008' href='http://stevish.com/archives/date/2008/11' />
+	<link rel='archives' title='October 2008' href='http://stevish.com/archives/date/2008/10' />
+	<link rel='archives' title='September 2008' href='http://stevish.com/archives/date/2008/09' />
+	<link rel='archives' title='July 2008' href='http://stevish.com/archives/date/2008/07' />
+	<link rel='archives' title='June 2008' href='http://stevish.com/archives/date/2008/06' />
+	<link rel='archives' title='May 2008' href='http://stevish.com/archives/date/2008/05' />
+	<link rel='archives' title='April 2008' href='http://stevish.com/archives/date/2008/04' />
+	<link rel='archives' title='March 2008' href='http://stevish.com/archives/date/2008/03' />
+	<link rel='archives' title='February 2008' href='http://stevish.com/archives/date/2008/02' />
+	<link rel='archives' title='January 2008' href='http://stevish.com/archives/date/2008/01' />
+	<link rel='archives' title='October 2007' href='http://stevish.com/archives/date/2007/10' />
+	<link rel='archives' title='September 2007' href='http://stevish.com/archives/date/2007/09' />
+	<link rel='archives' title='August 2007' href='http://stevish.com/archives/date/2007/08' />
+	<link rel='archives' title='June 2007' href='http://stevish.com/archives/date/2007/06' />
+	<link rel='archives' title='May 2007' href='http://stevish.com/archives/date/2007/05' />
+	<link rel='archives' title='April 2007' href='http://stevish.com/archives/date/2007/04' />
+	<link rel='archives' title='March 2007' href='http://stevish.com/archives/date/2007/03' />
+	<link rel='archives' title='February 2007' href='http://stevish.com/archives/date/2007/02' />
+	<link rel='archives' title='January 2007' href='http://stevish.com/archives/date/2007/01' />
+	<link rel='archives' title='December 2006' href='http://stevish.com/archives/date/2006/12' />
+	<link rel='archives' title='November 2006' href='http://stevish.com/archives/date/2006/11' />
+	<link rel='archives' title='October 2006' href='http://stevish.com/archives/date/2006/10' />
+	<link rel='archives' title='September 2006' href='http://stevish.com/archives/date/2006/09' />
+	<link rel='archives' title='August 2006' href='http://stevish.com/archives/date/2006/08' />
+	<link rel='archives' title='July 2006' href='http://stevish.com/archives/date/2006/07' />
+	<link rel='archives' title='June 2006' href='http://stevish.com/archives/date/2006/06' />
+	<link rel='archives' title='May 2006' href='http://stevish.com/archives/date/2006/05' />
+	<link rel='archives' title='April 2006' href='http://stevish.com/archives/date/2006/04' />
+	<link rel='archives' title='March 2006' href='http://stevish.com/archives/date/2006/03' />
+	<link rel='archives' title='February 2006' href='http://stevish.com/archives/date/2006/02' />
+	<link rel='archives' title='January 2006' href='http://stevish.com/archives/date/2006/01' />
+	<link rel='archives' title='December 2005' href='http://stevish.com/archives/date/2005/12' />
+	<link rel='archives' title='November 2005' href='http://stevish.com/archives/date/2005/11' />
+	<link rel='archives' title='October 2005' href='http://stevish.com/archives/date/2005/10' />
+	<link rel='archives' title='September 2005' href='http://stevish.com/archives/date/2005/09' />
+	<link rel='archives' title='August 2005' href='http://stevish.com/archives/date/2005/08' />
+	<link rel='archives' title='July 2005' href='http://stevish.com/archives/date/2005/07' />
+	<link rel='archives' title='June 2005' href='http://stevish.com/archives/date/2005/06' />
+	<link rel='archives' title='May 2005' href='http://stevish.com/archives/date/2005/05' />
+	<link rel='archives' title='April 2005' href='http://stevish.com/archives/date/2005/04' />
+	<link rel='archives' title='March 2005' href='http://stevish.com/archives/date/2005/03' />
+	<link rel='archives' title='February 2005' href='http://stevish.com/archives/date/2005/02' />
+
+	<link rel="alternate" type="application/rss+xml" title="Stevish &raquo; RSA Encryption in Pure PHP Comments Feed" href="http://stevish.com/rsa-encryption-in-pure-php/feed" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://stevish.com/wpstevishcom/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://stevish.com/wpstevishcom/wp-includes/wlwmanifest.xml" /> 
+<link rel='prev' title='The first &lt;del datetime=&quot;2011-05-14T03:09:52+00:00&quot;&gt;83,641&lt;/del&gt; &lt;ins datetime=&quot;2011-05-14T03:09:52+00:00&quot;&gt;56,543&lt;/ins&gt; prime numbers' href='http://stevish.com/the-first-83641-prime-numbers' />
+<link rel='next' title='The NET Bible Reader&#8217;s Edition' href='http://stevish.com/the-net-bible-readers-edition' />
+<meta name="generator" content="WordPress 3.4.2" />
+<link rel='canonical' href='http://stevish.com/rsa-encryption-in-pure-php' />
+</head>
+<body>
+<div id="centerwrap">
+
+
+<div id="header">
+
+	<div id="headerimg">
+		<h1><a href="http://stevish.com" title="Stevish">Stevish</a></h1>
+		<div class="description">From a mind that only One can understand</div>
+	</div>
+
+</div>
+
+
+
+<div id="sidebar">
+
+
+
+<h1 class="sidetitle">Welcome</h1><div class="hr"><hr /></div><br />
+		<ul>
+			<li><h2>Author</h2>
+			<!--Link to your image here.
+			For best results, make it 150 pixels wide--><a href="http://stevish.com"><img src="http://stevish.com/wpstevishcom/wp-content/themes/nineshadesgreen/images/stevish.jpg" alt="Stevish at Work" title="The Stevish at work layin floors" width="150px" class="centered" /></a>
+			<p>"Take 10 minutes out of your day and do something childish... immature... impractical. Here's to the kid inside of all of us."<br /><br /><span style="text-align: right;">-Stevish</span></p>
+			<div class="hr"><hr /></div><br /></li>
+
+
+
+
+		</ul>
+
+
+			
+		<div id="popout"><ul>
+			<!--<li class="pagenav"><h2>Pages</h2><ul><li class="page_item page-item-521"><a href="http://stevish.com/a-watch-of-some-sort">A Watch of Some Sort</a></li>
+<li class="page_item page-item-211"><a href="http://stevish.com/all-about-flooring">All About Flooring</a>
+<ul class='children'>
+	<li class="page_item page-item-214"><a href="http://stevish.com/all-about-flooring/coming-soon">Coming Soon</a></li>
+	<li class="page_item page-item-227"><a href="http://stevish.com/all-about-flooring/glossary">Glossary</a></li>
+	<li class="page_item page-item-212"><a href="http://stevish.com/all-about-flooring/test">Test1</a></li>
+	<li class="page_item page-item-213"><a href="http://stevish.com/all-about-flooring/wte-prefinished">What to Expect From Prefinished Flooring</a></li>
+	<li class="page_item page-item-226"><a href="http://stevish.com/all-about-flooring/wte-sitefinished">What to Expect From Site Finished Flooring</a></li>
+</ul>
+</li>
+<li class="page_item page-item-194"><a href="http://stevish.com/cancelled">Cancelled</a></li>
+<li class="page_item page-item-47"><a href="http://stevish.com/old-holy-bedtime-batman">Holy Bedtime Batman</a></li>
+<li class="page_item page-item-31"><a href="http://stevish.com/ifaq">IFAQ</a></li>
+<li class="page_item page-item-33"><a href="http://stevish.com/poetry">My Poetry</a>
+<ul class='children'>
+	<li class="page_item page-item-40"><a href="http://stevish.com/poetry/dream">A Reflection of a Dream</a></li>
+	<li class="page_item page-item-43"><a href="http://stevish.com/poetry/rich">A Rich Man&#8217;s Lament</a></li>
+	<li class="page_item page-item-37"><a href="http://stevish.com/poetry/sky">Beautiful Sky</a></li>
+	<li class="page_item page-item-35"><a href="http://stevish.com/poetry/death">Death to the World</a></li>
+	<li class="page_item page-item-39"><a href="http://stevish.com/poetry/forever">Love is Forever</a></li>
+	<li class="page_item page-item-64"><a href="http://stevish.com/poetry/lud">Love Upside Down</a></li>
+	<li class="page_item page-item-41"><a href="http://stevish.com/poetry/demise">My Own Demise</a></li>
+	<li class="page_item page-item-34"><a href="http://stevish.com/poetry/stars">Talking with the Stars</a></li>
+	<li class="page_item page-item-36"><a href="http://stevish.com/poetry/tree">Tree</a></li>
+	<li class="page_item page-item-38"><a href="http://stevish.com/poetry/love">What Love Is (Revised)</a></li>
+	<li class="page_item page-item-127"><a href="http://stevish.com/poetry/inside">What&#8217;s inside me?</a></li>
+	<li class="page_item page-item-44"><a href="http://stevish.com/poetry/where1">Where God Is 1</a></li>
+	<li class="page_item page-item-45"><a href="http://stevish.com/poetry/where2">Where God Is 2</a></li>
+	<li class="page_item page-item-145"><a href="http://stevish.com/poetry/where-the-clouds-play">Where the Clouds Play</a></li>
+	<li class="page_item page-item-42"><a href="http://stevish.com/poetry/you">You</a></li>
+</ul>
+</li>
+<li class="page_item page-item-21"><a href="http://stevish.com/need-a-little-help">Need a little help?</a></li>
+<li class="page_item page-item-158"><a href="http://stevish.com/pi">PI</a></li>
+<li class="page_item page-item-412 current_page_item"><a href="http://stevish.com/rsa-encryption-in-pure-php">RSA Encryption in Pure PHP</a></li>
+<li class="page_item page-item-333"><a href="http://stevish.com/rss-for-dummies">RSS for Dummies</a></li>
+<li class="page_item page-item-327"><a href="http://stevish.com/stevenet">Stevenet</a></li>
+<li class="page_item page-item-195"><a href="http://stevish.com/test">Test</a></li>
+<li class="page_item page-item-193"><a href="http://stevish.com/thankyou">Thank You!</a></li>
+<li class="page_item page-item-404"><a href="http://stevish.com/the-first-83641-prime-numbers">The first <del datetime="2011-05-14T03:09:52+00:00">83,641</del> <ins datetime="2011-05-14T03:09:52+00:00">56,543</ins> prime numbers</a></li>
+<li class="page_item page-item-489"><a href="http://stevish.com/the-net-bible-readers-edition">The NET Bible Reader&#8217;s Edition</a></li>
+</ul></li>-->
+
+			<li><h2>Archives</h2>
+				<ul>
+					<li><a href='http://stevish.com/archives/date/2012/09' title='September 2012'>September 2012</a></li>
+	<li><a href='http://stevish.com/archives/date/2012/01' title='January 2012'>January 2012</a></li>
+	<li><a href='http://stevish.com/archives/date/2011/10' title='October 2011'>October 2011</a></li>
+	<li><a href='http://stevish.com/archives/date/2011/09' title='September 2011'>September 2011</a></li>
+	<li><a href='http://stevish.com/archives/date/2010/10' title='October 2010'>October 2010</a></li>
+	<li><a href='http://stevish.com/archives/date/2010/03' title='March 2010'>March 2010</a></li>
+	<li><a href='http://stevish.com/archives/date/2009/10' title='October 2009'>October 2009</a></li>
+	<li><a href='http://stevish.com/archives/date/2009/06' title='June 2009'>June 2009</a></li>
+	<li><a href='http://stevish.com/archives/date/2009/04' title='April 2009'>April 2009</a></li>
+	<li><a href='http://stevish.com/archives/date/2009/03' title='March 2009'>March 2009</a></li>
+	<li><a href='http://stevish.com/archives/date/2009/02' title='February 2009'>February 2009</a></li>
+	<li><a href='http://stevish.com/archives/date/2009/01' title='January 2009'>January 2009</a></li>
+				</ul>
+			</li>
+
+			<li><h2>Categories</h2>
+				<ul>
+					<li class="cat-item cat-item-6"><a href="http://stevish.com/archives/category/stories-of-flooring" title="Me sharing some stories and knowledge I have gained in my experience with the Hardwood Cafe.">All About Flooring</a>
+</li>
+	<li class="cat-item cat-item-12"><a href="http://stevish.com/archives/category/ao-wa-kiya-internship" title="View all posts filed under Ao-Wa-Kiya Internship">Ao-Wa-Kiya Internship</a>
+</li>
+	<li class="cat-item cat-item-2"><a href="http://stevish.com/archives/category/babblings" title="These posts have no bearing on anything important. For the most part, they&#039;re simply entertainment for me, and hopefully also for you.">Babblings</a>
+</li>
+	<li class="cat-item cat-item-8"><a href="http://stevish.com/archives/category/ifaq" title="InFrequently Asked Questions">IFAQ</a>
+</li>
+	<li class="cat-item cat-item-4"><a href="http://stevish.com/archives/category/just-stevish" title="These didn&#039;t really fit under any other categories, and I didn&#039;t like seeing &quot;Uncategorized&quot; so much.">Just Stevish</a>
+</li>
+	<li class="cat-item cat-item-9"><a href="http://stevish.com/archives/category/babblings/oh-brother" title="View all posts filed under Oh Brother!">Oh Brother!</a>
+</li>
+	<li class="cat-item cat-item-10"><a href="http://stevish.com/archives/category/rachel" title="Caution: May contain sappiness">Rachel</a>
+</li>
+	<li class="cat-item cat-item-11"><a href="http://stevish.com/archives/category/rants" title="View all posts filed under Rants">Rants</a>
+</li>
+	<li class="cat-item cat-item-13"><a href="http://stevish.com/archives/category/riddles" title="View all posts filed under Riddles">Riddles</a>
+</li>
+	<li class="cat-item cat-item-3"><a href="http://stevish.com/archives/category/serious" title="View all posts filed under Serious">Serious</a>
+</li>
+	<li class="cat-item cat-item-7"><a href="http://stevish.com/archives/category/stevish-theme" title="View all posts filed under Stevish Theme">Stevish Theme</a>
+</li>
+	<li class="cat-item cat-item-16"><a href="http://stevish.com/archives/category/tea-time" title="View all posts filed under Tea Time">Tea Time</a>
+</li>
+	<li class="cat-item cat-item-1"><a href="http://stevish.com/archives/category/updates" title="View all posts filed under Updates">Updates</a>
+</li>
+	<li class="cat-item cat-item-5"><a href="http://stevish.com/archives/category/web-design" title="View all posts filed under Web Design">Web Design</a>
+</li>
+				</ul>
+			</li>
+			
+				  <li id="linkcat-14" class="linkcat"><h2>Blogs</h2>
+	<ul>
+<li><a href="http://blogsdon.com" title="People are Stupid. Discuss.">Blogsdon</a></li>
+<li><a href="http://idigak.blogspot.com" title="A deep thinker and good writer.">I Dig AK</a></li>
+<li><a href="http://www.xanga.com/home.aspx?user=MasterDragarn" title="A good friend of mine. Excellent writer. Very Sarcastic">Master Dragarn</a></li>
+<li><a href="http://www.xanga.com/rainsoakedpages" title="My Rachel">Rain Soaked Pages</a></li>
+<li><a href="http://bennettbulletin.com" title="Bill and Sandy&#8217;s Site">The Bennett Bulletin</a></li>
+<li><a href="http://thenakedgreen.com" title="My mentor in web design.">The Naked Green</a></li>
+<li><a href="http://weliveatcamp.com" title="The Deens&#8217; Website">We Live at Camp</a></li>
+
+	</ul>
+</li>
+  <li id="linkcat-15" class="linkcat"><h2>Links</h2>
+	<ul>
+<li><a href="http://stevish.com/all-about-flooring" title="Everything you ever wanted to know about hardwood flooring">All About Flooring</a></li>
+<li><a href="http://bluewaterwindowcleaning.com" title="Local Colorado Springs window cleaner. Trustworthy and affordable">Bluewater Window Cleaning</a></li>
+<li><a href="http://stevish.com/ifaq" title="Infrequently asked questions">IFAQ</a></li>
+<li><a href="http://stevish.com/poetry">My Poetry</a></li>
+<li><a href="http://stevish.com/pi" title="10,000 digits of Pi">PI!!!</a></li>
+<li><a href="http://stevish.com/archives/13" title="View or Download any of the Stevish Themes">Stevish Theme Center</a></li>
+<li><a href="http://hardwoodcafe.com" title="A Great Hardwood Flooring company based in Colorado Springs">The Hardwood Cafe</a></li>
+<li><a href="http://stevish.com/oldifaq.html" title="InFrequently Asked Questions from my old site">The old IFAQ</a></li>
+
+	</ul>
+</li>
+
+
+				<li><h2>Users</h2>
+				<ul>
+					<li>
+					</li>
+					<li><a href="http://stevish.com/wpstevishcom/wp-login.php">Log in</a></li>
+				</ul></li>
+				
+				<li><h2>Meta</h2>
+				<ul>
+					<li><a href="http://validator.w3.org/check/referer" title="This page validates as XHTML 1.0 Transitional">Valid <abbr title="eXtensible HyperText Markup Language">XHTML</abbr></a></li>
+					<li><a href="http://jigsaw.w3.org/css-validator/validator?uri=http://stevish.com">Valid CSS</a></li>
+
+					<li><a href="http://wordpress.org/" title="Powered by WordPress, state-of-the-art semantic personal publishing platform.">WordPress</a></li>
+									</ul>
+				</li>
+			
+		</ul></div>
+<a href="?css=nopop" title="Click here to switch to non-popout menu" id="nopoplink">Popout Menu not working?</a>
+
+<a href="?" title="Click here to switch back to the popout-style menu" id="poplink">Back to Popout Menu</a>
+
+<div class="hr"><hr /></div>
+<div id="clock" style="width: 120px; height: 60px; background-color: #bcbcbc;">
+	<div style="clear: right;">
+		<div id="h1" style="width: 20px; height: 20px; background-image: url(wpstevishcom/wp-content/themes/nineshadesgreen/images/0.jpg); float:right;"></div>
+		<div id="h2" style="width: 20px; height: 20px; background-image: url(wpstevishcom/wp-content/themes/nineshadesgreen/images/0.jpg); float:right;"></div>
+		<div id="h4" style="width: 20px; height: 20px; background-image: url(wpstevishcom/wp-content/themes/nineshadesgreen/images/0.jpg); float:right;"></div>
+		<div id="h8" style="width: 20px; height: 20px; background-image: url(wpstevishcom/wp-content/themes/nineshadesgreen/images/0.jpg); float:right;"></div>
+		<div id="h16" style="width: 20px; height: 20px; background-image: url(wpstevishcom/wp-content/themes/nineshadesgreen/images/0.jpg); float:right;"></div>
+	</div>
+	<div style="clear: right;">
+		<div id="m1" style="width: 20px; height: 20px; background-image: url(wpstevishcom/wp-content/themes/nineshadesgreen/images/0.jpg); float:right;"></div>
+		<div id="m2" style="width: 20px; height: 20px; background-image: url(wpstevishcom/wp-content/themes/nineshadesgreen/images/0.jpg); float:right;"></div>
+		<div id="m4" style="width: 20px; height: 20px; background-image: url(wpstevishcom/wp-content/themes/nineshadesgreen/images/0.jpg); float:right;"></div>
+		<div id="m8" style="width: 20px; height: 20px; background-image: url(wpstevishcom/wp-content/themes/nineshadesgreen/images/0.jpg); float:right;"></div>
+		<div id="m16" style="width: 20px; height: 20px; background-image: url(wpstevishcom/wp-content/themes/nineshadesgreen/images/0.jpg); float:right;"></div>
+		<div id="m32" style="width: 20px; height: 20px; background-image: url(wpstevishcom/wp-content/themes/nineshadesgreen/images/0.jpg); float:right;"></div>
+	</div>
+	<div style="clear: right;">
+		<div id="s1" style="width: 20px; height: 20px; background-image: url(wpstevishcom/wp-content/themes/nineshadesgreen/images/0.jpg); float:right;"></div>
+		<div id="s2" style="width: 20px; height: 20px; background-image: url(wpstevishcom/wp-content/themes/nineshadesgreen/images/0.jpg); float:right;"></div>
+		<div id="s4" style="width: 20px; height: 20px; background-image: url(wpstevishcom/wp-content/themes/nineshadesgreen/images/0.jpg); float:right;"></div>
+		<div id="s8" style="width: 20px; height: 20px; background-image: url(wpstevishcom/wp-content/themes/nineshadesgreen/images/0.jpg); float:right;"></div>
+		<div id="s16" style="width: 20px; height: 20px; background-image: url(wpstevishcom/wp-content/themes/nineshadesgreen/images/0.jpg); float:right;"></div>
+		<div id="s32" style="width: 20px; height: 20px; background-image: url(wpstevishcom/wp-content/themes/nineshadesgreen/images/0.jpg); float:right;"></div>
+	</div>
+</div>
+
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post" style="text-align: center;">
+<input type="hidden" name="cmd" value="_s-xclick" />
+<input type="image" src="http://stevish.com/wpstevishcom/images/support.gif" name="submit" alt="Make payments with PayPal - it's fast, free and secure!" />
+<input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
+" />
+</form>
+<br/><br/><span style="display: block; text-align: center; color: #231;">You can also support me by shopping Amazon through this link:</span>
+<!--Amazon Search link-->
+<iframe src="http://rcm.amazon.com/e/cm?t=stevliveonxan-20&o=1&p=20&l=qs1&f=ifr" width="120" height="90" frameborder="0" scrolling="no" style="margin-left: 15px;"></iframe>
+<!--End Amazon Search link-->
+
+</div>
+<script type="text/javascript">
+	function start() {
+		alert("here");
+		refreshClock();
+		
+	}
+	setInterval("refreshClock()", 1000);
+	
+	function refreshClock() {
+		
+		var currentTime = new Date ();
+		var hour = currentTime.getHours ();
+		var min = currentTime.getMinutes ();
+		var sec = currentTime.getSeconds ();
+		var binTime = new Array();
+		binTime['h16'] = 0;
+		binTime['h8'] = 0;
+		binTime['h4'] = 0;
+		binTime['h2'] = 0;
+		binTime['h1'] = 0;
+		binTime['m32'] = 0;
+		binTime['m16'] = 0;
+		binTime['m8'] = 0;
+		binTime['m4'] = 0;
+		binTime['m2'] = 0;
+		binTime['m1'] = 0;
+		binTime['s32'] = 0;
+		binTime['s16'] = 0;
+		binTime['s8'] = 0;
+		binTime['s4'] = 0;
+		binTime['s2'] = 0;
+		binTime['s1'] = 0;
+		
+		//hours
+		if(hour >= 16) {
+			binTime['h16'] = 1;
+			hour -= 16;
+		}
+		if(hour >= 8) {
+			binTime['h8'] = 1;
+			hour -= 8;
+		}
+		if(hour >= 4) {
+			binTime['h4'] = 1;
+			hour -= 4;
+		}
+		if(hour >= 2) {
+			binTime['h2'] = 1;
+			hour -= 2;
+		}
+		if(hour == 1) {
+			binTime['h1'] = 1;
+			hour -= 1;
+		}
+		
+		//minutes
+		if(min >= 32) {
+			binTime['m32'] = 1;
+			min -= 32;
+		}
+		if(min >= 16) {
+			binTime['m16'] = 1;
+			min -= 16;
+		}
+		if(min >= 8) {
+			binTime['m8'] = 1;
+			min -= 8;
+		}
+		if(min >= 4) {
+			binTime['m4'] = 1;
+			min -= 4;
+		}
+		if(min >= 2) {
+			binTime['m2'] = 1;
+			min -= 2;
+		}
+		if(min == 1) {
+			binTime['m1'] = 1;
+			min -= 1;
+		}
+		
+		//seconds
+		if(sec >= 32) {
+			binTime['s32'] = 1;
+			sec -= 32;
+		}
+		if(sec >= 16) {
+			binTime['s16'] = 1;
+			sec -= 16;
+		}
+		if(sec >= 8) {
+			binTime['s8'] = 1;
+			sec -= 8;
+		}
+		if(sec >= 4) {
+			binTime['s4'] = 1;
+			sec -= 4;
+		}
+		if(sec >= 2) {
+			binTime['s2'] = 1;
+			sec -= 2;
+		}
+		if(sec == 1) {
+			binTime['s1'] = 1;
+			sec -= 1;
+		}
+		
+		regEx = /^[hms][0-9]{1,2}$/;
+		
+		for(keyVar in binTime) {
+			if(keyVar.search(regEx) != -1) {
+				document.getElementById(keyVar).style.backgroundImage="url(wpstevishcom/wp-content/themes/nineshadesgreen/images/" + binTime[keyVar] + ".jpg)";
+			}
+		}
+
+	}
+
+</script>
+<!-- ukey="22F9720E" --><div id="page">
+	<div id="content" class="narrowcolumn">
+
+    		<div class="post">
+		<h2 id="post-412">RSA Encryption in Pure PHP</h2>
+			<div class="entrytext">
+				<p><del datetime="2009-03-30T14:31:11+00:00"><strong>Note:</strong> I didn&#8217;t really make these classes to be portable, so in the RSA_Handler class, there are a few things that I did my own way (mostly in the generate_keys and encrypt functions), but you should still be able to see how it works. If you want the most basic usage, use an RSA_keymaker object and the make_keys function. The function will return an array of keys (in number form) where $keys[0] is the public key, $keys[1] is the private key and $keys[2] is the modulo. The keys generated with the default function are around 1024 bits (a 310 digit modulo).</del></p>
+<p><del datetime="2009-03-30T14:31:11+00:00">In the future I&#8217;ll probably tweak these so that they&#8217;re useable on any PHP build (after 4.0 or so).</del></p>
+<p><em><strong>EDIT:</strong> I have updated the code! It is now 100% portable and full functioning. The only thing I have left out is the ability to encrypt the private key, but there are several pure PHP implementations of AES, DES3, Blowfish etc. which can be used to encrypt a private key for storage. This is released under the GPL Licence. Do whatever you want with it, but know there&#8217;s no warranty express or implied. My work here is done <img src='http://stevish.com/wpstevishcom/wp-includes/images/smilies/icon_smile.gif' alt=':)' class='wp-smiley' /> </p>
+<p><strong>UPDATE:</strong> The code is now more efficient, and uses number of bits to determine key sizes (instead of number of digits). The version number is included in the code so you can always check to see if there is a newer version available (but don&#8217;t hold your breath)</em><br />
+{code type=php}<br />
+// Stevish RSA version 2.1</p>
+<p>// Copyright 2009, Stevish.com (with mad props to te developers of the PEAR RSA extension)<br />
+// This script is distributed under the terms of the GNU General Public License (GPL)<br />
+// See http://www.gnu.org/licenses/gpl.txt for license details</p>
+<p>// Please use, distribute, modify, rip-off, sell or destroy this script however you see fit<br />
+// I only ask that you remove my copyright if you modify and re-release this.<br />
+// To make sure you have the genuine, up-to-date version, visit http://stevish.com/rsa-encryption-in-pure-php</p>
+<p>// To use:<br />
+//<br />
+// $text = &#8220;Peter Piper picked a peck of pickled peppers&#8221;;<br />
+// $RSA = new RSA_Handler();<br />
+// $keys = $RSA->generate_keypair(1024);<br />
+// $encrypted = $RSA->encrypt($text, $keys[0]);<br />
+// $decrypted = $RSA->decrypt($encrypted, $keys[1]);<br />
+// echo $decrypted; //Will print Peter Piper picked a peck of pickled peppers</p>
+<p>class RSA_Handler {<br />
+	function encrypt($text, $key) {<br />
+		list($p, $r, $keysize) = unserialize(base64_decode($key));<br />
+		$in = $this->blockify($text, $keysize);<br />
+		$out = &#8221;;<br />
+		foreach($in as $block) {<br />
+			if($block) {<br />
+				$cryptblock = $this->crypt_num($this->txt2num($block), $p, $r);<br />
+				$out .= $this->long_base_convert($cryptblock, 10, 145) . &#8221; &#8220;;<br />
+			}<br />
+		}<br />
+		return $out;<br />
+	}</p>
+<p>	function decrypt($code, $key) {<br />
+		list($q, $r) = unserialize(base64_decode($key));<br />
+		$in = explode(&#8221; &#8220;, $code);<br />
+		$out = &#8221;;<br />
+		foreach($in as $block) {<br />
+			if($block) {<br />
+				$block = $this->long_base_convert($block, 145, 10);<br />
+				$out .= $this->num2txt($this->crypt_num($block, $q, $r));<br />
+			}<br />
+		}<br />
+		return $out;<br />
+	}</p>
+<p>	function generate_keypair($bits = 1024) {<br />
+		$km = new RSA_keymaker();<br />
+		$keys = $km->make_keys($bits);<br />
+		//The keys are separated into arrays and then serialized and encoded in base64<br />
+		//This makes it easier to store and transmit them<br />
+		//<br />
+		//The private key should probably be encrypted with a user-supplied key (in AES or DES3)&#8230;<br />
+		//This way it can be stored on the server, yet still be secure. The user-supplied key should not be stored.<br />
+		$pub = base64_encode(serialize(array($keys[0], $keys[2], $bits)));<br />
+		$priv = base64_encode(serialize(array($keys[1], $keys[2], $bits)));<br />
+		return array($pub, $priv);<br />
+	}</p>
+<p>	function crypt_num($num, $key, $mod) {<br />
+		//The powerhorse function. This is where the encryption/decryption actually happens.<br />
+		//This function is used whether you are encrypting or decrypting.<br />
+		return $this->powmod($num, $key, $mod);<br />
+	}</p>
+<p>	function long_base_convert ($numstring, $frombase, $tobase) {<br />
+		//Converts a long integer (passed as a string) to/from any base from 2 to 145<br />
+		$chars = &#8220;0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOP QRSTUVWXYZ_-+=!@#$%^*(){[}]|:,.?/`~•¤¶§Çüéâ� �àåçêëèïîìÄÅÉæÆôöòûùÿÖÜ¢£¥ƒ áíóúñÑªº¿¬½¼¡«»¯ßµ±÷;<>&#8220;;<br />
+		$fromstring = substr($chars, 0, $frombase);<br />
+		$tostring = substr($chars, 0, $tobase);</p>
+<p>		$length = strlen($numstring);<br />
+		$result = &#8221;;<br />
+		for ($i = 0; $i < $length; $i++) {<br />
+			$number[$i] = strpos($fromstring, $numstring{$i});<br />
+		}<br />
+		do {<br />
+			$divide = 0;<br />
+			$newlen = 0;<br />
+			for ($i = 0; $i < $length; $i++) {<br />
+				$divide = $divide * $frombase + $number[$i];<br />
+				if ($divide >= $tobase) {<br />
+					$number[$newlen++] = (int)($divide / $tobase);<br />
+					$divide = $divide % $tobase;<br />
+				} elseif ($newlen > 0) {<br />
+					$number[$newlen++] = 0;<br />
+				}<br />
+			}<br />
+			$length = $newlen;<br />
+			$result = $tostring{$divide} . $result;<br />
+		} while ($newlen != 0);<br />
+		return $result;<br />
+	}</p>
+<p>	function blockify($in, $keysize) {<br />
+		//Calculate blocksize by keysize<br />
+		$b_len = floor($keysize/8);<br />
+		return str_split($in, $b_len);<br />
+	}</p>
+<p>	function txt2num($str) {<br />
+		//Turns regular text into a number that can be manipulated by the RSA algorithm<br />
+		$result = &#8217;0&#8242;;<br />
+		$n = strlen($str);<br />
+		do {<br />
+			$result = bcadd(bcmul($result, &#8217;256&#8242;), ord($str{&#8211;$n}));<br />
+		} while ($n > 0);<br />
+		return $result;<br />
+	}</p>
+<p>	function num2txt($num) {<br />
+		//Turns the numeric representation of text (as output by txt2num) back into text<br />
+		$result = &#8221;;<br />
+		do {<br />
+			$result .= chr(bcmod($num, &#8217;256&#8242;));<br />
+			$num = bcdiv($num, &#8217;256&#8242;);<br />
+		} while (bccomp($num, &#8217;0&#8242;));<br />
+		return $result;<br />
+	}</p>
+<p>	function powmod($num, $pow, $mod) {<br />
+		if (function_exists(&#8216;bcpowmod&#8217;)) {<br />
+			// bcpowmod is only available under PHP5<br />
+			return bcpowmod($num, $pow, $mod);<br />
+		}</p>
+<p>		// emulate bcpowmod<br />
+		$result = &#8217;1&#8242;;<br />
+		do {<br />
+			if (!bccomp(bcmod($pow, &#8217;2&#8242;), &#8217;1&#8242;)) {<br />
+				$result = bcmod(bcmul($result, $num), $mod);<br />
+			}<br />
+		   $num = bcmod(bcpow($num, &#8217;2&#8242;), $mod);</p>
+<p>		   $pow = bcdiv($pow, &#8217;2&#8242;);<br />
+		} while (bccomp($pow, &#8217;0&#8242;));<br />
+		return $result;<br />
+	}<br />
+}</p>
+<p>class RSA_keymaker {</p>
+<p>	static $primes = null;</p>
+<p>	function __construct() {<br />
+		if(is_null($this->primes)) {<br />
+			//Make $this->primes an array of all primes under 20,000<br />
+			//We will use this list to rule out the &#8220;easy&#8221; composite (non-prime) numbers</p>
+<p>			for ($i = 0; $i < 20000; $i++) {<br />
+				$numbers[] = $i;<br />
+			}<br />
+			$numbers[0] = $numbers[1] = 0; //Zero and one are not primes <img src='http://stevish.com/wpstevishcom/wp-includes/images/smilies/icon_smile.gif' alt=':)' class='wp-smiley' /><br />
+			foreach ($numbers as $i => $num) {<br />
+				if(!$num) {<br />
+					continue;<br />
+				}<br />
+				$j = $i;</p>
+<p>				for ($j += $i; $j < 20000; $j += $i) {<br />
+					//Jump to each multiple of the current number and set it to 0 (not prime)<br />
+					$numbers[$j] = 0;<br />
+				}<br />
+			}<br />
+			foreach($numbers as $num) {<br />
+				//Take all the prime numbers and fill the primes array<br />
+				if ($num) {<br />
+					$this->primes[] = $num;<br />
+				}<br />
+			}<br />
+		}<br />
+	}</p>
+<p>	function make_keys($bits = 1024, $u = false, $v = false) {<br />
+		//If not provided, select 2 random prime numbers each at about half the bit size of our key<br />
+		//We keep a possible variant of 2 bits so that there are a wider range of primes that can be used<br />
+		$variant = rand(0,2);<br />
+		if(!$u)<br />
+			$u = $this->make_prime(ceil($bits/2) + $variant);<br />
+		if(!$v)<br />
+			$v = $this->make_prime(floor($bits/2) &#8211; $variant);<br />
+		while(substr($u, -16, 2) < (substr($v, -16, 2) + 2) &#038;&#038; substr($u, -16, 2) > (substr($v, -16, 2) &#8211; 2) ) {<br />
+			//Make sure the 2 primes are at least 1 quadrillion numbers apart<br />
+			$v = $pm->make_prime(intval($digits/2));<br />
+		}</p>
+<p>		//Find our modulo r and phi(r)<br />
+		$r = bcmul($u, $v);<br />
+		$phir = bcmul(bcsub($u, 1), bcsub($v, 1));</p>
+<p>		//Pick a value for p (The Public key). We will make it 17 bits or smaller.<br />
+		$psize = ($bits > 51) ? 17 : intval($bits/3);<br />
+		$p = $this->make_prime($psize);</p>
+<p>		//Find the inverse of p mod phi(r) using the Extended Euclidian Algorithm<br />
+		$q = $this->euclid($p, $phir);</p>
+<p>		return array($p, $q, $r);<br />
+	}</p>
+<p>	function make_prime($bits) {<br />
+		//This function should not be used to generate primes less than 18 bits</p>
+<p>		$min = bcpow(2, $bits &#8211; 1);<br />
+		$max = bcsub(bcmul($min, 2), 1);<br />
+		$digits = strlen($max);<br />
+		while(strlen($min) < $digits)<br />
+			$min = "0" . $min;<br />
+		$ent = $this->entropyarray($digits);<br />
+		$maxed = true;<br />
+		$mined = true;<br />
+		$num = &#8221;;<br />
+		for($i = 0; $i < $digits; $i++) {<br />
+			//Create a long integer between $min and $max starting with the entropy number<br />
+			$thismax = 9;<br />
+			$thismin = 0;<br />
+			if($maxed)<br />
+				$thismax = substr($max, $i, 1);<br />
+			if($mined)<br />
+				$thismin = substr($min, $i, 1);</p>
+<p>			//Add random numbers (mod 10) until the number meets the constraints<br />
+			$thisdigit = ($ent[$i] + rand(0,9)) % 10;<br />
+			if($i == $digits - 1) //The last digit should be a 1, 3, 7 or 9<br />
+				while($thisdigit != 1 &#038;&#038; $thisdigit != 3 &#038;&#038; $thisdigit != 7 &#038;&#038; $thisdigit != 9 &#038;&#038; $thisdigit <= $thismax &#038;&#038; $thisdigit >= $thismin)<br />
+					$thisdigit = ($thisdigit + rand(0,9)) % 10;<br />
+			else<br />
+				while($thisdigit < = $thismax &#038;&#038; $thisdigit >= $thismin)<br />
+					$thisdigit = ($thisdigit + rand(0,9)) % 10;<br />
+			$num .= $thisdigit;<br />
+			if($maxed &#038;&#038; $thisdigit < $thismax)<br />
+				$maxed = false;<br />
+			if($mined &#038;&#038; $thisdigit > $thismin)<br />
+				$mined = false;<br />
+		}</p>
+<p>		//Check if the number is prime<br />
+		while(!$this->is_prime($num)) {<br />
+			//If the number is not prime, add 2 or 4 (since it is currently an odd number)<br />
+			//This will keep the number odd and skip 5 to speed up the primality testing<br />
+			if(substr($num, -1, 1) == 3)<br />
+				$num = bcadd($num, 4);<br />
+			else<br />
+				$num = bcadd($num, 2);<br />
+			$tries++;<br />
+		}<br />
+		return $num;<br />
+	}</p>
+<p>	function entropyarray($digits) {<br />
+		//create a long number based on as much entropy as possible<br />
+		$a = base_convert(md5(microtime()), 16, 10);<br />
+		$b = base_convert(sha1(@exec(&#8216;uptime&#8217;)), 16, 10);<br />
+		$c = mt_rand();<br />
+		$d = disk_total_space(&#8220;/&#8221;);<br />
+		$e = rand();<br />
+		$f = memory_get_usage();</p>
+<p>		//Make sure it is only numbers, scramble it and make it the right length<br />
+		$num = str_shuffle(preg_replace(&#8220;[^0-9]&#8220;, &#8221;, $a . $b . $c . $d . $e));<br />
+		if(strlen($num) > $digits)<br />
+			$num = substr($num, 0, $digits);<br />
+		else<br />
+			while(strlen($num) < $digits)<br />
+				$num = str_shuffle(substr(base_convert(md5($num), 16, 10), 3, 1) . $num);	</p>
+<p>		//Turn the number into an array and return it<br />
+		$ent_array = str_split($num);<br />
+		return $ent_array;<br />
+	}</p>
+<p>	function is_prime($num) {<br />
+		if(bccomp($num, 1) < 1)<br />
+			return false;<br />
+		//Clear the easy stuff (divide by all primes under 20,000)<br />
+		foreach($this->primes as $prime) {<br />
+			if(bccomp($num, $prime) == 0)<br />
+				return true;<br />
+			if(!bcmod($num, $prime))<br />
+				return false;<br />
+		}</p>
+<p>		//Try the more complex method with the first 7 primes as bases<br />
+		for($i = 0; $i < 7; $i++) {<br />
+			if(!$this->_millerTest($num, $this->primes[$i]))<br />
+				return false; //Number is composite<br />
+		}</p>
+<p>		//Strong probability that the number is prime<br />
+		return true;<br />
+	}</p>
+<p>	function _millerTest($num, $base) {<br />
+		if(!bccomp($num, &#8217;1&#8242;)) {<br />
+			// 1 is not prime <img src='http://stevish.com/wpstevishcom/wp-includes/images/smilies/icon_wink.gif' alt=';)' class='wp-smiley' /><br />
+			return false;<br />
+		}<br />
+		$tmp = bcsub($num, &#8217;1&#8242;);</p>
+<p>		$zero_bits = 0;<br />
+		while (!bccomp(bcmod($tmp, &#8217;2&#8242;), &#8217;0&#8242;)) {<br />
+			$zero_bits++;<br />
+			$tmp = bcdiv($tmp, &#8217;2&#8242;);<br />
+		}</p>
+<p>		$tmp = $this->powmod($base, $tmp, $num);<br />
+		if (!bccomp($tmp, &#8217;1&#8242;)) {<br />
+			// $num is probably prime<br />
+			return true;<br />
+		}</p>
+<p>		while ($zero_bits&#8211;) {<br />
+			if (!bccomp(bcadd($tmp, &#8217;1&#8242;), $num)) {<br />
+				// $num is probably prime<br />
+				return true;<br />
+			}<br />
+			$tmp = $this->powmod($tmp, &#8217;2&#8242;, $num);<br />
+		}<br />
+		// $num is composite<br />
+		return false;<br />
+	}</p>
+<p>	function euclid($num, $mod)	{<br />
+		//The Extended Euclidian Algorithm<br />
+		$x = &#8217;1&#8242;;<br />
+		$y = &#8217;0&#8242;;<br />
+		$num1 = $mod;<br />
+		do {<br />
+			$tmp = bcmod($num, $num1);<br />
+			$q = bcdiv($num, $num1);<br />
+			$num = $num1;<br />
+			$num1 = $tmp;</p>
+<p>			$tmp = bcsub($x, bcmul($y, $q));<br />
+			$x = $y;<br />
+			$y = $tmp;<br />
+		} while (bccomp($num1, &#8217;0&#8242;));<br />
+		if (bccomp($x, &#8217;0&#8242;) < 0) {<br />
+			$x = bcadd($x, $mod);<br />
+		}<br />
+		return $x;<br />
+	}</p>
+<p>	function powmod($num, $pow, $mod) {<br />
+		if (function_exists('bcpowmod')) {<br />
+			// bcpowmod is only available under PHP5<br />
+			return bcpowmod($num, $pow, $mod);<br />
+		}</p>
+<p>		// emulate bcpowmod<br />
+		$result = '1';<br />
+		do {<br />
+			if (!bccomp(bcmod($pow, '2'), '1')) {<br />
+				$result = bcmod(bcmul($result, $num), $mod);<br />
+			}<br />
+		   $num = bcmod(bcpow($num, '2'), $mod);</p>
+<p>		   $pow = bcdiv($pow, '2');<br />
+		} while (bccomp($pow, '0'));<br />
+		return $result;<br />
+	}<br />
+}<br />
+{/code}<br />
+<a href="rsa-classes.txt">Download in a text file</p>
+	
+					
+			</div>
+		</div>
+
+<!-- You can start editing here. -->
+
+	<h3 id="comments">21 Responses to &#8220;RSA Encryption in Pure PHP&#8221;</h3> 
+
+	<ol class="commentlist">
+
+	
+		<li class="alt" id="comment-65676">
+			<cite>dob</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-65676" title="">April 17th, 2009 at 9:15 am</a> </small>
+
+			<p>Wow!<br />
+I was looking for a way to encrypt data using RSA public keys from a web host. No hope for a PHP stuff but you did it! And more!..</p>
+<p>Thank you for that!</p>
+<p>Great job!</p>
+
+		</li>
+
+	
+	
+		<li class="" id="comment-66074">
+			<cite><a href='http://www.svingo.com' rel='external nofollow' class='url'>Christian Lehmann</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-66074" title="">June 4th, 2009 at 6:42 am</a> </small>
+
+			<p>Hi. Thanks for your code. I&#8217;m trying to get this to work but I&#8217;m stuck. I added some debug-echos and found that I needed to uncomment the $maxed = false; and $mined=false; in make_prime to get some echoes at all. Any help is appreciated. Thanks.</p>
+<p>			if($maxed &amp;&amp; $thisdigit  $thismin)<br />
+				$mined = false;</p>
+
+		</li>
+
+	
+	
+		<li class="alt" id="comment-66125">
+			<cite>watercrash</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-66125" title="">June 12th, 2009 at 10:02 am</a> </small>
+
+			<p>my host does not have the bcmath extension installed. could you use this instead?:</p>
+<p><a href="http://phpseclib.sourceforge.net/documentation/math.html#math_biginteger" rel="nofollow">http://phpseclib.sourceforge.net/documentation/math.h tml#math_biginteger</a></p>
+<p>it does what bcmath does but only uses php, instead. well, it uses bcmath if it is available, for speed, but if it is not, it uses a pure-php implementation.</p>
+<p>thx!</p>
+
+		</li>
+
+	
+	
+		<li class="" id="comment-66376">
+			<cite>Tester</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-66376" title="">September 17th, 2009 at 3:39 am</a> </small>
+
+			<p>Oops!&#8230; found the infinite loop at:</p>
+<p>                while($thisdigit = $thismin)<br />
+                    $thisdigit = ($thisdigit + rand(0,9)) % 10;</p>
+
+		</li>
+
+	
+	
+		<li class="alt" id="comment-66377">
+			<cite>Tester</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-66377" title="">September 17th, 2009 at 3:45 am</a> </small>
+
+			<p>while($thisdigit &lt;= $thismax &amp;&amp; $thisdigit &gt;= $thismin) {<br />
+ $thisdigit = ($thisdigit + rand(0,9)) % 10;</p>
+<p>when</p>
+<p>$thismax === 9<br />
+$thismin === 0</p>
+
+		</li>
+
+	
+	
+		<li class="" id="comment-66386">
+			<cite>insid0r</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-66386" title="">September 23rd, 2009 at 9:39 am</a> </small>
+
+			<p>As Tester says, if $thismin == 0 and $thismax == 9, the $thisdigit while loop would thrash for infinity.  In haste, and because the primality check later modifies the number anyway (so it doesn&#8217;t really matter), I dropped some entropy but fixed the loop by changing:<br />
+while($thisdigit = $thismin)<br />
+to:<br />
+while($thisdigit = $thismin)</p>
+<p>Likewise, a couple lines down, the primality check while loop would sometimes go on for far too long, so I essentially random-restarted (valid AI theory), by changing:<br />
+$tries++;<br />
+to:<br />
+if (++$tries &gt; 2001) return make_prime($bits);<br />
+(2001 is completely arbitrary, but works in my test cases.  Also note ++$i is 1/3 faster than $i++, which matters for big loops.)</p>
+<p>With the above changes, the script generates keypairs in decent time, and self-rectifies if the original guess was nowhere near a prime.  Since the problem space is fairly sparse, it&#8217;s better to guess again than to keep incrementing (at least, it seems to solve the problem much faster.)</p>
+
+		</li>
+
+	
+	
+		<li class="alt" id="comment-66387">
+			<cite>insid0r</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-66387" title="">September 23rd, 2009 at 9:41 am</a> </small>
+
+			<p>Oops.  The top of that should read (but was HTML-tag filtered out):<br />
+I changed:<br />
+while($thisdigit &lt;= $thismax &amp;&amp; $thisdigit &gt;= $thismin)<br />
+to:<br />
+while($thisdigit &lt; $thismax &amp;&amp; $thisdigit &gt;= $thismin)</p>
+
+		</li>
+
+	
+	
+		<li class="" id="comment-66388">
+			<cite>insid0r</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-66388" title="">September 23rd, 2009 at 2:59 pm</a> </small>
+
+			<p>Also return make_prime($bits); should become return $this-&gt;make_prime($bits);</p>
+<p>My bad.</p>
+
+		</li>
+
+	
+	
+		<li class="alt" id="comment-66433">
+			<cite>Tester</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-66433" title="">September 28th, 2009 at 11:57 am</a> </small>
+
+			<p>insid0r, for me, is the logic that&#8217;s wrong. This is my solution:</p>
+<p>(&#8230;)<br />
+  while( ($thisdigit != 1 &amp;&amp; $thisdigit != 3 &amp;&amp; $thisdigit != 7 &amp;&amp; $thisdigit != 9) || ($thisdigit &lt; $thismin || $thisdigit &gt; $thismax) )<br />
+    $thisdigit = ($thisdigit + rand(0,9)) % 10;<br />
+else<br />
+  while($thisdigit &lt; $thismin || $thisdigit &gt; $thismax)<br />
+    $thisdigit = ($thisdigit + rand(0,9)) % 10;</p>
+
+		</li>
+
+	
+	
+		<li class="" id="comment-66438">
+			<cite>Tester</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-66438" title="">October 1st, 2009 at 6:43 pm</a> </small>
+
+			<p>This statement -in make_keys() function- will cause a too much short prime number&#8230; and invalid (de)crypt:</p>
+<p>		while( substr($u, -16, 2) &lt; (substr($v, -16, 2) + 2) &amp;&amp; substr($u, -16, 2) &gt; (substr($v, -16, 2) &#8211; 2) ) {<br />
+			//Make sure the 2 primes are at least 1 quadrillion numbers apart<br />
+			$v = $this-&gt;make_prime(intval($digits/2));<br />
+		}</p>
+<p>The right way is:</p>
+<p>while( substr($u, -16, 2) &lt; (substr($v, -16, 2) + 2) &amp;&amp; substr($u, -16, 2) &gt; (substr($v, -16, 2) &#8211; 2) ) {<br />
+			//Make sure the 2 primes are at least 1 quadrillion numbers apart<br />
+			$v = $this-&gt;make_prime(floor($bits/2) &#8211; $variant);<br />
+		}</p>
+
+		</li>
+
+	
+	
+		<li class="alt" id="comment-74822">
+			<cite><a href='http://flowl.info' rel='external nofollow' class='url'>Dan</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-74822" title="">January 5th, 2011 at 9:54 am</a> </small>
+
+			<p>Hey, just a little remark, in the one method with $chars = &#8220;&#8230;.&#8221; you should be transforming this to a more unicode-friendly thing like using the dec/hex value instead of the chars themselves. $chars = &#8220;x1234x1235x1236&#8230;..&#8221; like this i mean.</p>
+<p>btw a hoster w/o common libs like bcmath,socks,curl,..enabled isnt worth a penny, sorry bro <img src='http://stevish.com/wpstevishcom/wp-includes/images/smilies/icon_razz.gif' alt=':P' class='wp-smiley' /> </p>
+
+		</li>
+
+	
+	
+		<li class="" id="comment-74827">
+			<cite>Chad</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-74827" title="">January 5th, 2011 at 11:35 am</a> </small>
+
+			<p>Does anyone have a fully revised version of this class (with the changes above) that works?</p>
+
+		</li>
+
+	
+	
+		<li class="alt" id="comment-79893">
+			<cite>alan</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-79893" title="">April 18th, 2011 at 10:44 am</a> </small>
+
+			<p>thankyou:)</p>
+<p>some great ideas here:)</p>
+
+		</li>
+
+	
+	
+		<li class="" id="comment-81360">
+			<cite>Charles</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-81360" title="">May 20th, 2011 at 7:03 am</a> </small>
+
+			<p>I&#8217;ve merged in all the changes listed here and decryption still does not seem to work correctly.</p>
+<p>Any hints?</p>
+
+		</li>
+
+	
+	
+		<li class="alt" id="comment-87296">
+			<cite>Mat</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-87296" title="">September 2nd, 2011 at 10:33 am</a> </small>
+
+			<p>Same here&#8230; this scripts doesn&#8217;t seem to work.</p>
+<p>PHP Notice:  Undefined property: RSA_keymaker::$primes in rsa.php on line 149<br />
+PHP Fatal error:  Maximum execution time of 30 seconds exceeded in rsa.php on line 232</p>
+
+		</li>
+
+	
+	
+		<li class="" id="comment-88314">
+			<cite>Alan</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-88314" title="">September 23rd, 2011 at 9:19 pm</a> </small>
+
+			<p>Hey,</p>
+<p>I borrowed some code from this.  Anyways, I rewrote you prime list init in the constructor.  The new code is about six times faster and less memory intense.  Anyways, here it is if interested:</p>
+<p>Original:<br />
+public function initPrimes2($max_prime = 20000) {<br />
+	if(is_null($this-&gt;primes)) {<br />
+		for ($i = 0; $i  $num) {<br />
+			if(!$num) {<br />
+				continue;<br />
+			}<br />
+			$j = $i;</p>
+<p>			for ($j += $i; $j primes[] = $num;<br />
+			}<br />
+		}<br />
+	}<br />
+}</p>
+<p>New code:<br />
+public function initPrimes($max_prime = 20000) {<br />
+	if(is_null($this-&gt;primes)) {<br />
+		//Add 2 and 3<br />
+		$this-&gt;primes[] = 2;<br />
+		$this-&gt;primes[] = 3;</p>
+<p>		//Make list of numbers not divisible by 2 and 3<br />
+		$pc_list = array();<br />
+		$stop_at = $max_prime/6;<br />
+		for($i=1; $i  $bool) {<br />
+			if(!$pc_list[$pc]) {<br />
+				continue;<br />
+			}<br />
+			$cur = $pc;<br />
+			$stop_at = $max_prime/(6*$cur);<br />
+			while($cur  $bool) {<br />
+			if($bool) {<br />
+				$this-&gt;primes[] = $pc;<br />
+			}<br />
+		}<br />
+	}<br />
+}</p>
+
+		</li>
+
+	
+	
+		<li class="alt" id="comment-88330">
+			<cite>Alan</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-88330" title="">September 24th, 2011 at 5:46 am</a> </small>
+
+			<p>Hey,</p>
+<p>I got your code working.  The main problem I found (other then a few minor glitches such as inf. loop and a few typos) is the chars string in the &#8220;long_base_convert&#8221; function.  Basically there are 95 printable standard ascii characters and the string is 145 chars.  Some of the other chars require a second char index in order to use them.  So, is you do a strlen() of the chars string, you get back 201 instead of 145.  These extra chars are non-unique which breaks function.</p>
+<p>So, you can use just the 94 printable chars (can&#8217;t use space) and work in base 94.  Simply change the base 145 to 94 in the function calls and change the chars string to:</p>
+<p>$chars = &#8220;0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOP QRSTUVWXYZ_-+=!@#$%^*(){[}]|:,.?/`~&amp;&#8217;;\&#8221;\\&#8221;</p>
+<p>Alternatively you can build a chars string user the chr() function.  With this you can use the full ascii table and work in base 255.  	function make_char_list() {<br />
+		$segments = array(<br />
+		                   48,  57,   //Numbers<br />
+                                   97,  122,  //Lowercase<br />
+		                   65,  90,   //Uppercase<br />
+		                   91,  96,   //Symbols<br />
+		                   33,  47,   //Symbols &#8212; Skip space (33)<br />
+		                   58,  64,   //Symbols<br />
+		                   0,   31,   //Beginning of table<br />
+		                   123, 255   //End of table<br />
+		             );</p>
+<p>		$str = &#8220;&#8221;;<br />
+		for($i=0; $i &lt; count($segments); $i+=2) {<br />
+			for($j = $segments[$i]; $j &lt;= $segments[$i+1]; $j++) {<br />
+				$str .= chr($j);<br />
+			}<br />
+		}</p>
+<p>		return $str;<br />
+	}</p>
+<p>Just don&#039;t print out the encrypted data and treat it as binary.  Also, ASCII index 0 is the null character, so, that index may want to be skipped if it causes a problem with string (not sure how php does it).  Anyways, it seems to work for me so far.</p>
+<p>I have made quite a few modifications to the code.  If you want my version, let me know where to send it.</p>
+
+		</li>
+
+	
+	
+		<li class="" id="comment-89751">
+			<cite><a href='https://www.everonworlds.com' rel='external nofollow' class='url'>John</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-89751" title="">October 26th, 2011 at 10:36 am</a> </small>
+
+			<p>@Alan I would be interested in your modified version myself as I prefer to use this over<br />
+phpseclib.  Even tho I have full control over the Server, I won&#8217;t need the full features<br />
+of phpseclib and would prefer a simple implementation.  I can be reached at:<br />
+mythdis-forumewfps (at) everonworlds (dot) com  Cheers</p>
+
+		</li>
+
+	
+	
+		<li class="alt" id="comment-89752">
+			<cite><a href='https://www.everonworlds.com' rel='external nofollow' class='url'>John</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-89752" title="">October 26th, 2011 at 10:37 am</a> </small>
+
+			<p>woops, forgot, make that (at ) yahoo.com  (its one of my disposables to avoid<br />
+spam <img src='http://stevish.com/wpstevishcom/wp-includes/images/smilies/icon_smile.gif' alt=':)' class='wp-smiley' /> </p>
+
+		</li>
+
+	
+	
+		<li class="" id="comment-92241">
+			<cite>emiller12345</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-92241" title="">December 12th, 2011 at 1:33 pm</a> </small>
+
+			<p>I was getting an error &#8230;<br />
+Undefined property: RSA_keymaker::$primes<br />
+&#8230;and found a simple correction:<br />
+&#8212; rsa-classes.txt.orig	2011-12-12 13:31:51.757542662 -0500<br />
++++ rsa-classes.txt	2011-12-12 13:30:54.477542217 -0500<br />
+@@ -144,7 +144,7 @@<br />
+ 	static $primes = null;</p>
+<p> 	function __construct() {<br />
+-		if(is_null($this-&gt;primes)) {<br />
++		if(isset($this-&gt;primes)) {<br />
+ 			//Make $this-&gt;primes an array of all primes under 20,000<br />
+ 			//We will use this list to rule out the &#8220;easy&#8221; composite (non-prime) numbers</p>
+
+		</li>
+
+	
+	
+		<li class="alt" id="comment-104074">
+			<cite>Dusu</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-104074" title="">October 2nd, 2012 at 2:21 am</a> </small>
+
+			<p>It has taken too long to call serialize(). It doesn&#8217;t seem to return. What shall I do?</p>
+
+		</li>
+
+	
+	
+	</ol>
+
+ 
+
+
+<h3 id="respond">Leave a Reply</h3>
+
+
+<form action="http://stevish.com/wpstevishcom/wp-comments-post.php" method="post" id="commentform">
+
+
+<p><input type="text" name="author" id="author" value="" size="22" tabindex="1" />
+<label for="author"><small>Name (required)</small></label></p>
+
+<p><input type="text" name="email" id="email" value="" size="22" tabindex="2" />
+<label for="email"><small>Mail (will not be published) (required)</small></label></p>
+
+<p><input type="text" name="url" id="url" value="" size="22" tabindex="3" />
+<label for="url"><small>Website</small></label></p>
+
+
+<!--<p><small><strong>XHTML:</strong> You can use these tags: &lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;strike&gt; &lt;strong&gt; </small></p>-->
+
+<p><textarea name="comment" id="comment" cols="100%" rows="10" tabindex="4"></textarea></p>
+
+<p><input name="submit" type="submit" id="submit" tabindex="5" value="Submit Comment" />
+<input type="hidden" name="comment_post_ID" value="412" />
+</p>
+<p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="70a1d220d4" /></p>
+</form>
+
+
+	  		</div>
+
+
+</div> <!-- Page Div -->
+
+<div id="footer">
+	<p>
+		Powered by <a href="http://wordpress.org">WordPress</a>
+		<br />Theme Created by <a href="http://stevish.com">Stevish</a>
+		<br />Proud to be hosted by <a href="http://www.arvixe.com/index.php?refid=3854" title="Affordable Web Hosting">Arvixe.com</a>, <a href="http://www.arvixe.com">Affordable Web Hosting</a>
+		<br /><a href="feed:http://stevish.com/feed">Entries (RSS)</a>
+		and <a href="feed:http://stevish.com/comments/feed">Comments (RSS)</a>.
+		<!-- 21 queries. 0.493 seconds. -->
+	</p>
+</div>
+
+</div> <!--Centerwrap-->
+
+		
+</body>
+</html>
