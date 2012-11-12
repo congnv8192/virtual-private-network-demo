@@ -1,0 +1,53 @@
+
+	#login
+	{
+			
+	}
+	#box
+	{
+		width:1000px;
+		height:auto;
+		margin:auto;
+		padding:0px;
+	}
+	#header
+	{
+		width:1000px;
+		height:auto;
+		margin-bottom:20px;
+		padding:0px;
+		border:1px solid black;
+	}
+	#content
+	{
+		width:300px;
+		height:auto;
+		margin:auto;
+		padding:auto;
+		border:3px ridge #85ADFF;
+		border-top:0px;
+		border-radius:0px 0px 15px 15px;
+	}
+	#pic
+	{
+		
+	}
+	#content form
+	{
+		margin-left:15px;
+	}
+	#content form input.textbox
+	{
+		width:90%;
+		height:auto;
+		padding:auto;
+		margin-left:5px;
+	}
+	#footer
+	{
+		width:990px;
+		height:auto;
+		margin-top:20px;
+		padding:5px;
+		border-top:4px groove black;
+	}
