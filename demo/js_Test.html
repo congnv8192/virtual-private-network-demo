@@ -1,0 +1,66 @@
+<html>
+	<head>
+		<!-- Include essentials -->
+		<script language="JavaScript" src="resources/rsa/BigInt.js"></script>
+		<script language="JavaScript" src="resources/rsa/Barrett.js"></script>
+		<script language="JavaScript" src="resources/rsa/RSA.js"></script>
+
+		<!-- Main content -->
+		<script language="JavaScript">
+			var key;
+			
+			function bodyOnload(){
+				key=new RSAKeyPair("5ABB","01146BD07F0B74C086DF00B37C602A0B","01D7777C38863AEC21BA2D91EE0FAF51");
+			}
+			function encrypt(){
+				//alert("Called");
+				with(document.frm){
+					// init empty verification display area
+					plainTxt.value = "";
+					// init empty result display area
+					cipherTxt.value = "";
+			/**********************ENCRYPTION***********************/
+
+					// starting encryption
+					cipherTxt.value = encryptedString(key,txt.value);
+					
+			/*******************End of ENCRYPTION******************/
+					
+				}
+			}
+			function decrypt(){
+				with (document.frm){
+					// init empty verification display area
+					plainTxt.value = "";
+					
+			/**********************DECRYPTION***********************/
+
+					// start decrypting
+					plainTxt.value=decryptedString(key,cipherTxt.value);
+					
+			/*******************End of DECRYPTION******************/
+				}
+			}
+		</script>
+	</head>
+	
+	<body onload= "bodyOnload()">
+		<form name= "frm">
+			Message:
+			</br>
+			<textarea rows= 3 name= 'txt'>Message here</textarea>
+			</br>
+			<input type= "button" value= "Encrypt" onClick= "encrypt()" />
+			</br>
+			Cipher Text:
+			</br>
+			<textarea rows= 3 name= 'cipherTxt' readonly style="width:40%">Result here</textarea>
+			</br>
+			<input type= "button" value= "Decrypt" onClick= "decrypt()" />
+			</br>
+			Plain Text:
+			</br>
+			<textarea rows= 3 name= 'plainTxt' readonly style="width:40%">Verification here </textarea>
+		</form>
+	</body>
+</html>
