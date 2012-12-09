@@ -1,0 +1,34 @@
+Slide:
+
+1. Content
+	. Topic & member: images here
+	. Outline: ok
+	* Definition
+	* Why VPN
+	* VPN network protocols
+	* Advantages & Disadvantages
+	* VPN application
+	- softwares
+	- OpenVPN
+	+ List of apps
+	+ OpenVPN
+		. details
+	
+	- We may take some changes below:
+	+ Adding section: HOW IT WORKS 
+	-> change in Outline page
+	-> change in slide
+	-> Change in roles
+	To introduce more about how the vpn implement & how it protect
+	the connection which is called "secured"
+	
+	+
+2. Appearance
+	- Background & Text should be taken in to consideration
+	- Should be more images& animations
+	
+	
+3. Questions
+	- OpenVPN what network protocol it uses
+	- vpn statistics
+	- intranet & extranet transmittion? How extranet is detected?
